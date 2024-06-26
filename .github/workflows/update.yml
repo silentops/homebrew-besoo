@@ -46,7 +46,10 @@ jobs:
         env: 
           BRANCH: ${{ steps.branch.outputs.BRANCH }}
         
-      - name: Summary
-        run: echo "### Please create PR using the branch $BRANCH" >> $GITHUB_STEP_SUMMARY
+      - name: Create Pull Request
+        run: |
+          gh pr create --base main --title "Update Besu version ${{ inputs.version }}" --body "Besu version update to ${{ inputs.version }}" || {
+            echo "Action does not have permission to create PRs. Ignoring..."
+          }
         env:
-          $BRANCH: ${{ steps.branch.outputs.BRANCH }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
