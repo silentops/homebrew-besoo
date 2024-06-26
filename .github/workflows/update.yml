@@ -45,3 +45,8 @@ jobs:
           git push origin $BRANCH
         env: 
           BRANCH: ${{ steps.branch.outputs.BRANCH }}
+        
+      - name: Summary
+        run: echo "### Please create PR using the branch $BRANCH" >> $GITHUB_STEP_SUMMARY
+        env:
+          $BRANCH: ${{ steps.branch.outputs.BRANCH }}
