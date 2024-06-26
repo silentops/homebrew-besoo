@@ -28,4 +28,13 @@ jobs:
         run: |
           echo "BRANCH=update-${{ inputs.version }}-${{ github.run_number }}" >> "$GITHUB_OUTPUT"
 
-      - run: echo BRANCH=${{ steps.branch.outputs.BRANCH }}
+      - name: Update version
+        run: |
+          git checkout -b $BRANCH
+          bash updateBesu.sh ${{ inputs.version }}
+          git status -s | grep " M " | grep -q besu.rb || {
+            echo "No changes found in the besu.rb"
+            exit 1
+          }
+        env: 
+          BRANCH: ${{ steps.branch.outputs.BRANCH }}
