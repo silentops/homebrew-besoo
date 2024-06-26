@@ -26,6 +26,6 @@ jobs:
       - name: Setup branch name
         id: branch
         run: |
-          echo "BRANCH=update-${{ inputs.version }}-${{ github.github.run_number }}" >> "$GITHUB_OUTPUT"
+          echo "BRANCH=update-${{ inputs.version }}-${{ github.run_number }}" >> "$GITHUB_OUTPUT"
 
       - run: echo BRANCH=${{ steps.branch.outputs.BRANCH }}
