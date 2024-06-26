@@ -1,0 +1,31 @@
+name: Update
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        required: true
+        type: string
+        description: 'Besu version to be updated'
+      name:
+        required: true
+        type: string
+        description: 'Name of the author to be included in git commit signature'
+      email:
+        required: true
+        type: string
+        description: 'Email of the author to be included in git commit signature'
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+
+      - name: Setup branch name
+        id: branch
+        run: |
+          echo "BRANCH=update-${{ inputs.version }}-${{ github.github.run_number }}" >> "$GITHUB_OUTPUT"
+
+      - run: echo BRANCH=${{ steps.branch.outputs.BRANCH }}
