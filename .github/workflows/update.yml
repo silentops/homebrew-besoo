@@ -30,11 +30,17 @@ jobs:
 
       - name: Update version
         run: |
+          git configure
           git checkout -b $BRANCH
           bash updateBesu.sh ${{ inputs.version }}
           git status -s | grep " M " | grep -q besu.rb || {
             echo "No changes found in the besu.rb"
             exit 1
           }
+          git config --global user.name "${{ inputs.name }}"
+          git config --global user.email "${{ inputs.email }}"
+          git add besu.rb
+          git commit -s -m "Update Besu version ${{ inputs.version }}"
+          git push origin $BRANCH
         env: 
           BRANCH: ${{ steps.branch.outputs.BRANCH }}
